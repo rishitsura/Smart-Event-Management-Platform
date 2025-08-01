@@ -1,0 +1,36 @@
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: event-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: eventmanagement
+      MYSQL_USER: eventuser
+      MYSQL_PASSWORD: eventpassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - event-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: event-redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - event-network
+
+volumes:
+  mysql_data:
+  redis_data:
+
+networks:
+  event-network:
+    driver: bridge
